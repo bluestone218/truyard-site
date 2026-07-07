@@ -1,0 +1,31 @@
+---
+layout: base.njk
+---
+<article class="product-hero">
+  <div>
+    <img src="{{ image }}" alt="{{ title }}">
+  </div>
+  <div>
+    <h1>{{ title }}</h1>
+    <p class="tagline">{{ tagline }}</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/dealers/">Find a Dealer</a>
+      <a class="btn btn-secondary" href="/contact/">Request a Callback</a>
+    </div>
+  </div>
+</article>
+
+<div class="card">
+  {{ content | safe }}
+</div>
+
+<table class="specs-table">
+  <tbody>
+  {% for row in specs %}
+    <tr>
+      <td>{{ row.key }}</td>
+      <td>{{ row.value }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>

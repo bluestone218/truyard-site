@@ -1,0 +1,14 @@
+---
+layout: base.njk
+title: "Home"
+---
+<h1>{{ site.tagline }}</h1>
+<p>Browse the Hawke combo mower series below. More product lines are being added as pages are finished.</p>
+
+<div class="card">
+  <ul>
+  {% for product in collections.products %}
+    <li><a href="{{ product.url }}">{{ product.data.title }}</a> — {{ product.data.tagline }}</li>
+  {% endfor %}
+  </ul>
+</div>

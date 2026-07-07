@@ -1,0 +1,23 @@
+---
+layout: base.njk
+title: "Request a Callback"
+---
+<h1>Request a Callback</h1>
+<div class="card">
+  <form name="callback" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="callback">
+    <p>
+      <label>Name<br><input type="text" name="name" required></label>
+    </p>
+    <p>
+      <label>Phone<br><input type="tel" name="phone" required></label>
+    </p>
+    <p>
+      <label>Which product are you asking about?<br><input type="text" name="product"></label>
+    </p>
+    <p>
+      <label>Message<br><textarea name="message" rows="4"></textarea></label>
+    </p>
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
+</div>
