@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: bluestone218/truyard-site
   branch: main
 
 media_folder: "src/images/uploads"
