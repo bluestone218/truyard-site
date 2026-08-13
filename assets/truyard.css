@@ -1,0 +1,854 @@
+/* ==========================================================================
+   TruYard — shared stylesheet
+
+   >>> THIS IS THE FILE TO EDIT. <<<
+   Location: _build/src/truyard.css
+
+   build.py copies it to prototype/assets/truyard.css on every run. Editing
+   the copy in prototype/assets/ will be silently overwritten — edit here.
+
+   Single source of truth for colour, type and components.
+   Every page links this file. Nothing is styled inline.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS — the whole palette. If a colour is not here, it is not used.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --paper:        #F1F0EA;   /* page background */
+  --paper-sunk:   #E9E7DF;   /* footer band, alternating sections */
+  --white:        #FFFFFF;   /* product photo bed, cards */
+
+  /* Ink — three steps only */
+  --ink:          #141414;   /* headings, primary text */
+  --ink-mid:      #4A4741;   /* body copy (warm, sits on warm paper) */
+  --ink-soft:     #7A756B;   /* captions, meta, disabled */
+
+  /* Brand */
+  --yellow:       #F5C400;   /* the single accent. One yellow. */
+  --nav:          #1C1208;   /* nav bar, footer strap, dark chips */
+
+  /* Lines */
+  --border:       #E3E0D6;   /* every border on the site */
+  --border-firm:  #CFCABA;   /* inputs, table rules needing more weight */
+
+  /* Type */
+  --display: 'Archivo Black', 'Arial Black', sans-serif;
+  --sans:    'Inter', system-ui, -apple-system, sans-serif;
+  --mono:    'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Scale — body starts at 16px, not 13px */
+  --t-hero:  clamp(38px, 5.5vw, 68px);
+  --t-h1:    clamp(28px, 3.4vw, 40px);
+  --t-h2:    22px;
+  --t-h3:    17px;
+  --t-body:  16px;
+  --t-small: 14px;
+  --t-meta:  12.5px;
+
+  --gutter: clamp(20px, 5vw, 64px);
+  --maxw:   1240px;
+}
+
+/* --------------------------------------------------------------------------
+   2. BASE
+   -------------------------------------------------------------------------- */
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink-mid);
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  line-height: 1.65;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: var(--ink); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3 { color: var(--ink); margin: 0; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Visible keyboard focus — was absent site-wide */
+a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0; z-index: 100;
+  background: var(--nav); color: var(--white); padding: 12px 18px; font-size: var(--t-small);
+}
+.skip-link:focus { left: 0; }
+
+/* --------------------------------------------------------------------------
+   3. HEADER
+   -------------------------------------------------------------------------- */
+.masthead {
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+}
+.masthead__inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 24px; padding: 20px var(--gutter);
+}
+.masthead__logo img { height: 66px; width: auto; }
+
+.langs { display: flex; align-items: center; gap: 10px; }
+.langs a { display: flex; border: 1.5px solid var(--border-firm); line-height: 0; }
+.langs a[aria-current="true"] { border-color: var(--ink); }
+.langs a:hover { border-color: var(--ink); }
+
+.contact-strip {
+  font-family: var(--mono);
+  font-size: var(--t-meta);
+  color: var(--ink-mid);
+  line-height: 1.85;
+  text-align: right;
+}
+.contact-strip a { color: var(--ink-mid); text-decoration: underline; }
+
+/* LINE brand icon — deliberately NOT a --token in section 1. It's a
+   third-party mark carrying its own recognized color (LINE green), the same
+   way a WhatsApp or Google icon keeps its own color inside someone else's
+   palette. It is scoped to .icon-line only — nowhere else on the site uses
+   this green. If you're auditing for an 11th colour, this is the one
+   exception, and it's meant to stay exactly that: one exception, one place. */
+.icon-line { display: inline-block; vertical-align: -2px; margin-right: 4px; }
+.icon-line path { fill: #00B900; }
+
+/* --------------------------------------------------------------------------
+   4. NAV
+   -------------------------------------------------------------------------- */
+.nav { background: var(--nav); }
+.nav__inner {
+  display: flex; align-items: stretch;
+  max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter);
+}
+.nav a {
+  display: flex; align-items: center; gap: 7px;
+  padding: 15px 18px;
+  color: var(--white);
+  font-size: var(--t-small); font-weight: 500;
+  letter-spacing: .04em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.nav a:hover { background: rgba(255,255,255,.09); text-decoration: none; }
+.nav a[aria-current="page"] { background: var(--yellow); color: var(--ink); font-weight: 600; }
+.nav a[aria-current="page"] svg { stroke: var(--ink); }
+
+.nav__toggle {
+  display: none;
+  background: none; border: 0; cursor: pointer;
+  color: var(--white); font-family: var(--sans); font-size: var(--t-small);
+  font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  padding: 15px var(--gutter); align-items: center; gap: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   5. BREADCRUMB
+   -------------------------------------------------------------------------- */
+.crumb {
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: var(--t-meta);
+  padding: 13px 0;
+}
+/* The trail is emitted with NO whitespace between the links and the separators
+   — the gaps come from `.sep { margin: 0 8px }`. A margin is not a line-break
+   opportunity, so the whole trail is one unbreakable run and the longest one,
+   Home » Products » Chipper/Mulchers » CM95 PTO, ran 11px past a 320px screen.
+   Making the row a wrapping flex container gives it break points between the
+   items without touching the markup or the spacing. */
+.crumb .wrap { display: flex; flex-wrap: wrap; align-items: center; }
+.crumb a { color: var(--ink-soft); }
+.crumb .sep { margin: 0 8px; color: var(--border-firm); }
+.crumb [aria-current="page"] { color: var(--ink); }
+
+/* --------------------------------------------------------------------------
+   6. PRODUCT — photo leads, text follows
+   -------------------------------------------------------------------------- */
+/* THE PRODUCT PAGE IS TWO BANDS, NOT ONE GRID.  (chat 11)
+   ------------------------------------------------------------------------
+   It used to be a single `1.15fr 1fr` grid holding the photo on the left and
+   EVERYTHING else on the right — name, tagline, lede, glance, buy block and
+   video. The right column ran 1269–1570px against a photo column that could
+   not grow past 456px, so every one of the 22 products carried 816–1117px of
+   empty left column and the spec tabs started 1585–1887px down the page.
+
+   Now:  .prod-top  photo  |  name, tagline, lede, glance
+         .prod-buy  buy block  |  video
+
+   Two shorter rows instead of one very tall one. Measured on all 22 products
+   at 1366px: dead column gone, spec tabs now 1306–1511px, an improvement of
+   180–480px on every product. Verified 320–1920px including the 1025–1049px
+   band where the columns are at their narrowest.
+
+   .product itself is now just a block wrapper — do not put a grid back on it
+   or both bands become columns of it and the page renders at half width. */
+.product { display: block; padding: 40px 0 8px; }
+
+.prod-top {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px;
+  align-items: start;
+}
+
+.prod-buy {
+  display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px;
+  align-items: start;
+  margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--border);
+}
+
+/* A grid item's automatic minimum size is its MIN-CONTENT size, not zero. So
+   any child that refuses to get narrower — a nowrap button, a fixed-width
+   input, a padded box — silently forces its whole track wider than the grid,
+   and the page gains a horizontal scrollbar with nothing visibly wrong.
+
+   That is exactly what happened at 320px. The quantity row needed 273px, the
+   .buy box added 42px of padding on top, and the 280px track was pushed to
+   315px. It surfaced as .cta AND .video both sticking out, which looked like
+   two bugs and was one. 21 of 28 pages were affected and it went unnoticed
+   because earlier sweeps measured named boxes rather than document
+   scrollWidth — a box measured inside an overflowing track looks fine.
+
+   min-width: 0 lets the track win. It changes nothing above 620px, where the
+   tracks are already wider than their content. */
+.prod-top > *, .prod-buy > * { min-width: 0; }
+.prod-buy .cta h2 { margin-top: 0; }
+
+/* The width rule for the video lives on .video in build.py's EXTRA_CSS, where
+   it is `calc(100% / 3 - 12px)` and is overridden to 100% only inside
+   .product__info. The video is no longer inside .product__info, so without
+   this it reverts to a third of a 490px column — 151px, which collapses the
+   label to one word per line. */
+.prod-buy .video { width: 100%; margin: 0; }
+
+/* ---- PHOTO TREATMENT ----------------------------------------------------
+   ONE rule, applied everywhere, driven by "shot" in site-data.json.
+   Never set these by hand per page.
+
+     shot: "cutout"  →  .shot--mount
+        The subject is on a pure white background and has no edge of its own.
+        The mount supplies one:  white bed  →  grey mat (--border)  →  page.
+
+     shot: "field"   →  .shot--bleed
+        A photograph. It already has its own edges, tone and depth.
+        It fills its box corner to corner with no frame at all.
+        Never mat a photograph — it makes the page look like a scrapbook.
+
+   Mat and bed widths come from --mat and --bed, set per context below, so
+   a thumbnail and a product hero stay in proportion to each other.
+   ------------------------------------------------------------------------ */
+.shot { position: relative; display: block; }
+.shot__bed { display: flex; align-items: center; justify-content: center; height: 100%; }
+
+.shot--mount { background: var(--border); padding: var(--mat, 14px); }
+.shot--mount .shot__bed { background: var(--white); padding: var(--bed, 14px); }
+.shot--mount img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+
+.shot--bleed { background: var(--nav); overflow: hidden; }
+.shot--bleed .shot__bed { padding: 0; }
+.shot--bleed img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- product hero gallery ----
+   CAP THE HEIGHT. NEVER SET A WIDTH.  (chat 11)
+
+   width/height stay `auto` so the browser can only ever SHRINK a photo to
+   fit — it can never blow one up. That matters more than it sounds: the 22
+   source photos run from 132 x 200 (C100) to 1552 x 1594 (XK50), and nine of
+   them are portrait, the C120 at an aspect of 0.53. A first attempt at this
+   used `width: 100%` and it failed in both directions at once — it stretched
+   the C100 to 3.7x its own pixels, and it turned the C120's photo column into
+   a 1013px tower that made that page LONGER than before the fix.
+
+   With a height cap and auto sizing, all 22 land in a 158–536px band with
+   nothing upscaled anywhere. Verified 320–1920px.
+
+   460px, not 380px: 380 was holding the photo to roughly half the pixels the
+   source files already have. There is no upscaling at 460 on any product. */
+.gallery__main { --mat: 16px; --bed: 22px; min-height: 0; }
+.gallery__main .shot__bed { min-height: 0; }
+.gallery__main img { max-height: 460px; max-width: 100%; width: auto; height: auto; }
+
+/* The strip holds a MAXIMUM OF 5 PHOTOS — enforced by check.py, not by CSS.
+   The slots SHARE the row rather than being fixed at 88px. That matters: the
+   gallery column is fluid (.product is 1.15fr 1fr), so 88px thumbs only fit
+   five at ~1050px viewport and up. At 390px they fit four, and at 1025px —
+   just above the two-column breakpoint, where the column is at its NARROWEST
+   (468px, not 922px) — they also fit four. Fixed widths left gaps between the
+   breakpoints; sharing the row removes them at every width at once.
+   max-width caps the thumbs so they never grow past the original 88px. */
+.gallery__strip { display: flex; gap: 10px; margin-top: 10px; }
+.gallery__strip button {
+  flex: 1 1 0; min-width: 0; max-width: 88px;
+  aspect-ratio: 11 / 9;              /* the original 88 x 72 */
+  height: auto; padding: 0; cursor: pointer; border: 0;
+  background: none; --mat: 4px; --bed: 5px;
+}
+.gallery__strip button > .shot,
+.gallery__strip button.shot { height: 100%; }
+.gallery__strip button .shot__bed { height: 100%; }
+.gallery__strip button[aria-selected="true"] .shot--mount { background: var(--ink); }
+.gallery__strip button[aria-selected="true"] .shot--bleed { outline: 2px solid var(--ink); outline-offset: -2px; }
+.gallery__strip img { max-height: 100%; width: auto; object-fit: contain; }
+
+.badge {
+  display: inline-block;
+  background: var(--nav); color: var(--yellow);
+  font-family: var(--mono); font-size: 11px; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 5px 10px; margin-bottom: 14px;
+}
+
+.product h1 {
+  font-family: var(--display);
+  font-size: var(--t-h1);
+  line-height: 1.06;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Optional one-line tagline between the h1 and the lede. Renders only when a
+   product has a "tagline" in site-data.json — products without one are
+   unchanged. Yellow rule ties it to the accent without adding a colour. */
+.product__tagline {
+  font-size: 19px;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--ink);
+  margin: -4px 0 18px;
+  padding-left: 14px;
+  border-left: 3px solid var(--yellow);
+}
+
+.product__lede { font-size: var(--t-body); line-height: 1.7; margin: 0 0 26px; }
+
+/* At-a-glance spec chips */
+.glance { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 28px; }
+.glance div { background: var(--paper); padding: 12px 14px; }
+.glance dt { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 3px; }
+.glance dd { margin: 0; font-size: var(--t-small); font-weight: 600; color: var(--ink); }
+
+/* --------------------------------------------------------------------------
+   7. CTA + BUY — contact first, cart second (kept from original, restyled)
+   -------------------------------------------------------------------------- */
+.cta h2 {
+  font-family: var(--mono);
+  font-size: var(--t-h3); font-weight: 700;
+  letter-spacing: .01em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.cta__row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 13px 22px; cursor: pointer;
+  font-family: var(--sans); font-size: var(--t-small); font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  border-radius: 2px; border: 1px solid var(--ink); white-space: nowrap;
+}
+.btn:hover { text-decoration: none; }
+.btn--primary { background: var(--ink); color: var(--yellow); }
+.btn--primary:hover { background: #000; }
+.btn--ghost { background: transparent; color: var(--ink); }
+.btn--ghost:hover { background: var(--ink); color: var(--yellow); }
+
+.reach {
+  border: 1px solid var(--border); background: var(--paper-sunk);
+  padding: 11px 16px; font-family: var(--mono); font-size: var(--t-meta);
+  line-height: 1.7; color: var(--ink);
+}
+
+.rule { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.rule::before, .rule::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.rule span { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+
+.buy { border: 1px solid var(--border-firm); background: var(--white); padding: 18px 20px; }
+.buy__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.buy__price { font-family: var(--display); font-size: 28px; letter-spacing: -.01em; color: var(--ink); line-height: 1.1; }
+.buy__vat { font-size: var(--t-meta); color: var(--ink-soft); margin-top: 4px; }
+.buy__qty { display: flex; align-items: center; gap: 14px; }
+.buy__qty label { font-size: var(--t-small); }
+.buy__qty input { width: 62px; padding: 9px 10px; border: 1px solid var(--border-firm); border-radius: 2px; font: inherit; font-size: var(--t-small); }
+.buy__note { font-size: var(--t-meta); color: var(--ink-soft); line-height: 1.6; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.buy--tba .buy__price { font-family: var(--mono); font-size: 20px; color: var(--ink-soft); }
+
+/* --------------------------------------------------------------------------
+   8. TABS — now functional
+   -------------------------------------------------------------------------- */
+.tabs { margin-top: 56px; border-top: 1px solid var(--border); padding-top: 0; }
+.tabs__list { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+.tabs__list button {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  padding: 16px 26px;
+  font-family: var(--sans); font-size: var(--t-small); font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft);
+  border-bottom: 3px solid transparent; margin-bottom: -1px;
+}
+.tabs__list button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--yellow); }
+.tabs__panel { padding: 32px 0 8px; }
+.tabs__panel[hidden] { display: none; }
+
+.features { columns: 2; column-gap: 56px; margin: 0; padding: 0; list-style: none; max-width: 980px; }
+.features li {
+  break-inside: avoid; padding: 0 0 14px 26px; position: relative;
+  font-size: var(--t-body); line-height: 1.6;
+}
+.features li::before {
+  content: ""; position: absolute; left: 0; top: .62em;
+  width: 10px; height: 10px; background: var(--yellow);
+}
+.features strong { color: var(--ink); font-weight: 600; }
+
+.spectable { width: 100%; border-collapse: collapse; max-width: 780px; font-size: var(--t-small); }
+.spectable th, .spectable td { text-align: left; padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.spectable th {
+  font-family: var(--mono); font-weight: 500; font-size: var(--t-meta);
+  letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft);
+  width: 42%; background: var(--paper-sunk);
+}
+.spectable td { color: var(--ink); font-weight: 500; }
+.spectable tr:last-child th, .spectable tr:last-child td { border-bottom: 0; }
+.spec-pending { color: var(--ink-soft); font-weight: 400; font-style: italic; }
+.spec-note { font-family: var(--mono); font-size: var(--t-meta); color: var(--ink-soft); margin-top: 18px; }
+.thumb-pending { font-family: var(--mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* --------------------------------------------------------------------------
+   9. COMPARE STRIP
+   -------------------------------------------------------------------------- */
+.compare { margin: 64px 0 0; border-top: 1px solid var(--border); padding-top: 40px; }
+.compare h2 { font-family: var(--display); font-size: var(--t-h2); text-transform: uppercase; letter-spacing: -.01em; margin-bottom: 22px; }
+.compare__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+.card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); }
+.card:hover { border-color: var(--ink); text-decoration: none; }
+.card[aria-current="true"] { border-color: var(--ink); border-width: 2px; }
+/* ---- card photo frame ----
+   CAP THE HEIGHT. NEVER SET A WIDTH.  (same rule as the product hero, and for
+   the same reason — max-height can only ever shrink an image, so it cannot
+   inflate a small source. Nine of the twenty sources are portrait, the C120 at
+   an aspect of 0.53.)
+
+   The cap was 132px, and it was doing invisible work exactly as `max-height:
+   380px` did on the product page before chat 11. Measured on all 20 photos
+   across six categories: the machine used 22%-62% of the white bed, median
+   43%. Every single photo rendered at exactly 132px tall, so the portrait ones
+   collapsed to slivers — the C120 was 69px wide in a 309px bed.
+
+   At 240 the median is 78%. Verified on all 28 pages that render a card (the
+   22 product pages carry the compare strip too) at nine widths, 375-1920:
+   nothing overflows and nothing is upscaled at any of them.
+
+   The three numbers move together. `min-height` on .card__pic is the cap plus
+   48px of furniture — 10px mat and 14px bed, top and bottom.
+
+   NOT 289. That would make the bed 1.07:1, the same shape as the product hero,
+   so one photograph would fill both frames exactly — the right destination.
+   Nine of the twenty current sources are too small to feed it and would go
+   soft on a 2x screen. Revisit once the shoot lands 1600px sources. */
+.card__pic { --mat: 10px; --bed: 14px; min-height: 288px; }
+.card__pic .shot__bed { min-height: 240px; }
+.card__pic img { max-height: 240px; }
+.card__body { background: var(--paper); padding: 14px 16px 16px; border-top: 1px solid var(--border); flex: 1; }
+.card__name { font-family: var(--display); font-size: var(--t-h3); text-transform: uppercase; letter-spacing: -.005em; color: var(--ink); }
+.card__kind { font-size: var(--t-meta); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); margin: 4px 0 8px; }
+.card__spec { font-family: var(--mono); font-size: var(--t-meta); color: var(--ink); }
+.card__price { font-size: var(--t-small); font-weight: 600; color: var(--ink); margin-top: 8px; }
+.card__here { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); margin-top: 8px; }
+
+/* --------------------------------------------------------------------------
+   10. HOMEPAGE
+   -------------------------------------------------------------------------- */
+.hero { background: var(--nav); color: var(--white); position: relative; overflow: hidden; }
+.hero__inner {
+  max-width: var(--maxw); margin: 0 auto; padding: clamp(56px, 8vw, 104px) var(--gutter);
+  position: relative; z-index: 2;
+}
+.hero h1 {
+  font-family: var(--display); font-size: var(--t-hero); line-height: .94;
+  letter-spacing: -.015em; text-transform: uppercase; color: var(--white);
+  max-width: 15ch;
+}
+.hero__sub {
+  font-size: clamp(17px, 1.7vw, 21px); line-height: 1.5; font-weight: 500;
+  color: var(--white); max-width: 46ch; margin: 22px 0 32px; opacity: .92;
+}
+.hero__cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero .btn--primary { background: var(--yellow); color: var(--ink); border-color: var(--yellow); }
+.hero .btn--primary:hover { background: var(--white); border-color: var(--white); }
+.hero .btn--ghost { color: var(--white); border-color: rgba(255,255,255,.55); }
+.hero .btn--ghost:hover { background: var(--white); color: var(--ink); border-color: var(--white); }
+
+/* Placeholder for the photograph that should live here */
+.hero__media {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: flex-end;
+  padding-right: var(--gutter);
+}
+.hero__media img { height: 100%; width: auto; object-fit: cover; opacity: .5; }
+.hero__placeholder {
+  position: absolute; right: var(--gutter); top: 50%; transform: translateY(-50%);
+  z-index: 1; width: min(38%, 460px); aspect-ratio: 4/3;
+  border: 2px dashed rgba(255,255,255,.28);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: rgba(255,255,255,.5);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; text-align: center;
+  padding: 20px;
+}
+
+.section { padding: clamp(48px, 6vw, 80px) 0; }
+.section__head { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+.section h2 { font-family: var(--display); font-size: var(--t-h2); text-transform: uppercase; letter-spacing: -.01em; }
+.section__head a { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-mid); }
+
+.range { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+.tile { position: relative; display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); overflow: hidden; min-height: 380px; }
+.tile:hover { border-color: var(--ink); text-decoration: none; }
+.tile__pic { position: relative; flex: 1; min-height: 0; --mat: 12px; --bed: 20px; }
+.tile__pic .shot__bed { height: 100%; }
+.tile__pic.shot--mount img { max-height: 100%; }
+/* badge sits on the mat, above both treatments */
+.tile .badge { position: absolute; top: 12px; left: 12px; z-index: 3; margin: 0; }
+/* on a full-bleed photo the badge needs to clear the image tonally */
+.tile__pic.shot--bleed .badge { background: var(--nav); color: var(--yellow); }
+/* was #1B5C87 — off-palette blue. Now the brand dark. */
+.tile__label { flex-shrink: 0; background: var(--nav); color: var(--white); padding: 15px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tile__label h3 { font-size: var(--t-h3); font-weight: 600; text-transform: uppercase; letter-spacing: .01em; color: var(--white); }
+.tile__label svg { flex-shrink: 0; stroke: var(--yellow); }
+/* text tile — not a photo, so no mount and no bleed */
+.tile--flag .tile__pic {
+  background: var(--paper-sunk); padding: 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.tile--flag h3.pitch { font-family: var(--display); font-size: var(--t-h2); line-height: 1.14; text-transform: uppercase; letter-spacing: -.01em; color: var(--ink); text-align: center; }
+.tile__pending { display: flex; flex-direction: column; align-items: center; gap: 12px; color: var(--ink-soft); font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+
+.assurance { background: var(--paper-sunk); border-block: 1px solid var(--border); }
+.assurance__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: clamp(40px, 5vw, 60px) 0; }
+.assurance h3 { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
+.assurance h3::after { content: ""; display: block; width: 28px; height: 3px; background: var(--yellow); margin-top: 10px; }
+.assurance p { margin: 0; font-size: var(--t-small); line-height: 1.7; }
+
+/* --------------------------------------------------------------------------
+   11. FOOTER — 3 columns, sunk band so the page closes
+   -------------------------------------------------------------------------- */
+.footer { background: var(--paper-sunk); border-top: 1px solid var(--border); padding: clamp(44px, 5vw, 64px) 0; }
+.footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; }
+.footer h3 {
+  font-size: var(--t-meta); font-weight: 600; letter-spacing: .07em;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.footer h3::after { content: ""; display: block; width: 28px; height: 3px; background: var(--yellow); margin-top: 10px; }
+.footer__links { display: flex; flex-direction: column; gap: 9px; }
+.footer a { color: var(--ink-mid); font-size: var(--t-small); }
+.footer__contact { font-size: var(--t-small); line-height: 1.95; color: var(--ink-mid); }
+.footer__contact a { text-decoration: underline; }
+
+.strap { background: var(--nav); padding: 16px 0; }
+.strap .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.strap, .strap a { color: rgba(255,255,255,.62); font-size: var(--t-meta); }
+.strap a:hover { color: var(--white); }
+
+/* --------------------------------------------------------------------------
+   12. RESPONSIVE — the site had zero media queries
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  /* .product is no longer a grid — the two bands inside it are. */
+  .prod-top, .prod-buy { grid-template-columns: 1fr; gap: 34px; }
+  .gallery__main { min-height: 0; }
+  .gallery__main img { max-height: 340px; }
+  .range, .compare__grid, .assurance__grid { grid-template-columns: repeat(2, 1fr); }
+  .hero__placeholder { display: none; }
+  .hero h1, .hero__sub { max-width: none; }
+  .footer__grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+
+@media (max-width: 860px) {
+  .masthead__inner { flex-wrap: wrap; justify-content: center; text-align: center; row-gap: 14px; }
+  .contact-strip { text-align: center; width: 100%; order: 3; }
+  .nav__toggle { display: flex; }
+  .nav__inner { display: none; flex-direction: column; padding-bottom: 8px; }
+  .nav__inner.is-open { display: flex; }
+  .nav a { width: 100%; padding: 14px var(--gutter); }
+  .features { columns: 1; }
+  .tabs__list button { padding: 14px 18px; }
+}
+
+@media (max-width: 620px) {
+  /* --t-h1 is clamp(28px, 3.4vw, 40px), so below ~825px the 28px FLOOR binds
+     and the heading stops responding at all. "CHIPPER/MULCHERS" is one
+     unbreakable token — no space to wrap at — and at 28px it measures 314px
+     inside a 280px column, which is the last of the 320px overflows. Dropping
+     the floor to 24px brings it to 269px and the word stays whole.
+     overflow-wrap is the backstop: if a longer name ever appears it breaks the
+     word rather than pushing the whole page sideways. */
+  :root { --t-body: 15.5px; --t-h1: clamp(24px, 7vw, 28px); }
+  .page-h1, h1 { overflow-wrap: break-word; }
+  .range, .compare__grid, .assurance__grid, .footer__grid { grid-template-columns: 1fr; }
+  .glance { grid-template-columns: 1fr; }
+  .buy__top { flex-direction: column; align-items: stretch; }
+  /* Let the row break instead of holding label + input + a nowrap button on
+     one line. That row's min-content was 273px, which is what forced the
+     .prod-buy track open at 320px — see the min-width note on .prod-buy.
+     Sharing the space rather than pinning a size, same as the thumbnail
+     strip. */
+  .buy__qty { justify-content: space-between; flex-wrap: wrap; }
+  .buy__qty .btn { flex: 1 1 100%; }
+  .cta__row .btn, .cta__row .reach { width: 100%; }
+  /* No .gallery__strip rule here on purpose. It used to be
+     `flex: 0 0 66px; height: 58px` — a fixed size, which still overflowed at
+     375px and 390px (five 66px thumbs need 370px; the column is 335px and
+     350px). The thumbs now share the row at every width, so a breakpoint
+     override would only reintroduce the gap it was trying to close. */
+  .spectable th { width: 50%; }
+  .tile { min-height: 300px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   13. PRINT — spec sheets get printed and taken to dealers
+   -------------------------------------------------------------------------- */
+@media print {
+  .nav, .crumb, .cta, .buy, .compare, .footer, .strap, .gallery__strip { display: none; }
+  body { background: #fff; font-size: 11pt; }
+  .tabs__panel[hidden] { display: block !important; }
+  .tabs__list { display: none; }
+  .product { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---- prototype-only additions ---------------------------------------- */
+.proto-flag { background: var(--nav); color: var(--yellow); text-align: center;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em; padding: 8px 16px; }
+
+.page-h1 { font-family: var(--display); font-size: var(--t-h1); line-height: 1.05;
+  letter-spacing: -.015em; text-transform: uppercase; margin-bottom: 20px; }
+.page-lede { font-size: var(--t-body); line-height: 1.75; max-width: 74ch; margin: 0 0 20px; }
+.page-body { font-size: var(--t-body); line-height: 1.75; max-width: 74ch; margin: 0 0 18px; color: var(--ink-mid); }
+
+/* Parts table — the spec table with a header row and grouping bands. */
+.parts { margin-top: 8px; }
+.parts thead th { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-soft); text-align: left; font-weight: 500;
+  border-bottom: 1px solid var(--border-firm); padding: 8px 12px 8px 0; }
+.parts tbody td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.parts__group th { font-family: var(--sans); font-size: var(--t-small); font-weight: 600;
+  color: var(--ink); background: var(--paper-sunk); padding: 9px 12px; text-align: left;
+  border-bottom: 1px solid var(--border); }
+.parts__detail { color: var(--ink-mid); }
+
+/* Category subline. Same treatment as .product__tagline so a category page and
+   a product page read as the same system. Renders only where a category has a
+   "tagline" in site-data.json. */
+.page-tagline { font-size: 19px; line-height: 1.45; font-weight: 500; color: var(--ink);
+  max-width: 74ch; margin: -8px 0 18px; padding-left: 14px;
+  border-left: 3px solid var(--yellow); }
+
+.copy-todo { background: repeating-linear-gradient(45deg, rgba(245,196,0,.10) 0 10px, rgba(245,196,0,.18) 10px 20px);
+  border-left: 3px solid var(--yellow); padding: 12px 16px; font-family: var(--mono);
+  font-size: var(--t-meta); color: var(--ink); max-width: 74ch; }
+
+/* ---- video ------------------------------------------------------------
+   One film per category; products inherit it. The player is a FACADE — our
+   own poster with a play button, and the YouTube iframe is only injected on
+   click. Nothing from youtube.com loads until the visitor asks for it, which
+   keeps third-party script and cookies off every product page.
+
+   aspect-ratio holds the box before anything loads, so the page doesn't jump.
+   No 11th colour: the play button is the existing yellow on the existing ink. */
+/* THE VIDEO IS A CARD.
+
+   Sized to one column of the product grid, so it reads as part of the range
+   rather than a band bolted above it:
+
+     grid   = repeat(3, 1fr), gap 18px
+     column = (W - 2x18)/3 = W/3 - 12   ->  calc(100%/3 - 12px)
+
+   A card is ~360 x 308. A 16:9 poster at 360 is 203, plus the body strip puts
+   the video card within ~35px of a product card. Two earlier attempts sized it
+   by WIDTH against 2 cards (765 x 430) and by height against half the row
+   (549 x 309); both were bigger than anything else on the page, because 16:9
+   is a wide shape and matching card WIDTH always overshoots card HEIGHT.
+
+   Because the tile is small, clicking opens a lightbox rather than playing
+   in place — nobody watches a machine work in a 360px window. */
+.video { margin: 34px 0 26px; width: calc(100% / 3 - 12px); max-width: 100%; }
+
+/* On a PRODUCT page the tile lives inside .product__info, under the buy block,
+   not in a band of its own. A lone 360px card on a 1116px row left three
+   quarters of the row empty and pushed the tabs 124px of dead margin down the
+   page. Inside the column it is column-width — which is the width of the buy
+   block directly above it, so the two read as one stack — and the tabs follow
+   straight on from .product at the existing 56px rhythm.
+
+   Card-width belongs on the CATEGORY page, where the tile sits above a row of
+   product cards and has something to match. Here it has nothing to match. */
+.product__info .video { width: 100%; margin: 26px 0 0; }
+
+/* Reset the button defaults, then let .card supply the look. */
+.card--video { padding: 0; font: inherit; color: inherit; text-align: left;
+  cursor: pointer; width: 100%; }
+.card--video:hover { border-color: var(--ink); }
+.card--video:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+
+/* Full bleed, no mount. A video poster is a field shot, and the photo rule says
+   field shots are never matted. */
+.video__pic { position: relative; display: block; aspect-ratio: 16 / 9;
+  overflow: hidden; background: var(--paper-sunk); }
+.video__poster { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video__nopost { position: absolute; inset: 0; justify-content: center; }
+.video__btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(.8);
+  pointer-events: none; }
+.video__btn .play__bg { fill: var(--nav); opacity: .82; transition: opacity .15s; }
+.video__btn .play__tri { fill: var(--yellow); }
+.card--video:hover .play__bg, .card--video:focus-visible .play__bg { opacity: 1; }
+.card--video .card__body { display: block; }
+.card--video .card__name { display: block; font-size: 15px; line-height: 1.25; }
+.card--video .card__kind { display: block; }
+
+/* No film yet. Same footprint, hatched, and the label says it is missing
+   rather than advertising something that isn't there. Counted by check.py. */
+.card--video-pending { cursor: default; }
+.card--video-pending:hover { border-color: var(--border); }
+.card--video-pending .card__name, .card--video-pending .card__kind { color: var(--ink-soft); }
+.video__pic--pending { display: flex; align-items: center; justify-content: center;
+  background: repeating-linear-gradient(45deg, rgba(245,196,0,.10) 0 10px, rgba(245,196,0,.18) 10px 20px); }
+
+/* Lightbox. Built only when a poster is clicked — this is where the YouTube
+   iframe finally gets created, and not one moment earlier. */
+.lightbox { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center;
+  justify-content: center; padding: 24px; background: rgba(28,18,8,.92); }
+.lightbox__inner { width: 100%; max-width: 1100px; position: relative; }
+.lightbox__frame { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.lightbox__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.lightbox__close { position: absolute; right: 0; top: -42px; background: none; border: 0;
+  color: var(--white); font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .06em;
+  text-transform: uppercase; cursor: pointer; padding: 6px 2px; }
+.lightbox__close:hover { color: var(--yellow); }
+.lightbox__close:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
+
+/* Follow the card grid down. Breakpoints match .compare__grid in truyard.css
+   exactly — changing one without the other is how the two silently drift. */
+@media (max-width: 1024px) { .video { width: calc(50% - 9px); } }
+@media (max-width: 620px)  { .video { width: 100%; }
+  .lightbox { padding: 16px; } .lightbox__close { top: -36px; } }
+
+/* ---- CATEGORY PAGE: the full-width bar, BELOW the grid ---- see video_bar()
+   for why it moved and why it is 100px.
+
+   .video.video--bar is TWO classes on purpose. The width rules above are single
+   class and two of them live inside media queries, so relying on source order
+   to beat them would work until somebody moved a block. This wins outright at
+   every width. */
+.video.video--bar { width: 100%; margin: 32px 0 0; }
+.card--video-bar { display: block; width: 100%; background: var(--nav);
+  border: 0; padding: 0; }
+.card--video-bar:hover { border: 0; }
+/* HEADING LEFT, MARK PINNED RIGHT — the band is anchored at both ends.
+
+   With both at the left the pair ran out around 700px of an 1112px band and
+   the last 40% trailed off into nothing. This is the same idiom as the
+   homepage category tiles: dark band, label left, mark hard right. It also
+   keeps the heading on the page's left axis, which the h1, the tagline, the
+   lede and every card share.
+
+   Centring was the other candidate and was rendered alongside. It reads well,
+   but it does not remove the empty space — it splits it, roughly 290px each
+   side — and it would make the bar the only centred element on the page. */
+/* 17px is not a taste value — it is what lines the bar up with the cards.
+   A card is 1px of border plus 16px of body padding, so a card name starts
+   17px inside the card. The bar spans the same 1112px as the grid, so 17px of
+   inner padding puts the heading at 144 (under EAGLE XL46) and the mark's
+   right edge at 1222 (under the last card's text). Both ends align.
+   Mobile keeps 20px — the grid is one column there and there is nothing to
+   line up with. */
+.vbar__inner { display: flex; align-items: center; justify-content: space-between;
+  gap: 26px; min-height: 100px; padding: 0 17px; }
+.vbar__mark { flex: 0 0 auto; display: flex; align-items: center; order: 2; }
+.vbar__mark svg { display: block; }
+.vbar__text { flex: 0 1 auto; display: flex; flex-direction: column; gap: 8px;
+  order: 1; }
+.vbar__title { font-family: var(--display); font-size: var(--t-h2);
+  text-transform: uppercase; letter-spacing: -.01em; line-height: 1.05;
+  color: var(--white); }
+.vbar__state { font-family: var(--mono); font-size: var(--t-meta);
+  letter-spacing: .06em; text-transform: uppercase; color: var(--yellow); }
+.card--video-bar .play__bg { fill: var(--yellow); opacity: 1; }
+.card--video-bar .play__tri { fill: var(--nav); }
+.card--video-bar:hover .play__bg { opacity: .85; }
+
+/* No film yet. Same bar, muted — it states the gap rather than advertising a
+   film that does not exist. If every range is filmed before launch this state
+   never ships, which is why it is plain rather than designed. */
+.card--video-bar.card--video-pending { cursor: default; }
+.card--video-bar.card--video-pending .vbar__title { color: rgba(255,255,255,.55); }
+.card--video-bar.card--video-pending .vbar__state { color: rgba(255,255,255,.40); }
+.card--video-bar.card--video-pending .vbar__mark  { color: rgba(255,255,255,.40); }
+
+/* Below 620 the bar stacks. min-height goes to 0 deliberately: the padding
+   sets the height once the mark sits above the text, and holding 100px there
+   would leave a gap under the second line. */
+@media (max-width: 620px) {
+  .vbar__inner { flex-direction: column; align-items: flex-start;
+    justify-content: flex-start; gap: 16px; padding: 24px 20px; min-height: 0; }
+  /* Reset the order. Stacked, `order: 2` would drop the mark BELOW the words
+     and the bar would open with a heading and no sign it is a video. */
+  .vbar__mark { order: 0; }
+  .vbar__text { order: 1; }
+  .vbar__mark svg { width: 44px; height: 44px; }
+}
+
+/* Copy held for approval. Dormant — renders only when a page has "flags" in
+   site-data.json, which nothing currently does. Styled in the ten-token palette
+   (was an off-palette red); the hazard hatching is the same treatment as
+   .copy-todo, one step heavier because this one is a hold, not a placeholder. */
+.copy-alert { background: repeating-linear-gradient(45deg, rgba(245,196,0,.14) 0 10px, rgba(245,196,0,.26) 10px 20px);
+  border: 1px solid var(--border-firm); border-left: 6px solid var(--yellow);
+  padding: 18px 22px; margin-bottom: 28px; max-width: 74ch; }
+.copy-alert h3 { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink); margin-bottom: 8px; }
+.copy-alert p { font-size: var(--t-small); color: var(--ink-mid); margin: 0 0 12px; }
+.copy-alert ul { margin: 0; padding-left: 20px; font-size: var(--t-small); line-height: 1.7; }
+.copy-alert q { font-style: italic; }
+
+.stub-note { border: 1px dashed var(--border-firm); background: var(--paper-sunk);
+  padding: 16px 20px; font-size: var(--t-small); line-height: 1.7; margin: 22px 0; max-width: 74ch; }
+.stub-note code { font-family: var(--mono); font-size: .92em; background: var(--white);
+  border: 1px solid var(--border); padding: 1px 5px; }
+
+.recruit { border-top: 1px solid var(--border); margin-top: 36px; padding-top: 24px; }
+.recruit p { font-size: var(--t-body); margin: 0; }
+
+.contact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin: 28px 0; }
+.contact-grid h3 { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .07em;
+  text-transform: uppercase; margin-bottom: 8px; }
+.contact-grid h3::after { content: ""; display: block; width: 28px; height: 3px;
+  background: var(--yellow); margin-top: 9px; }
+.contact-grid p { margin: 0; font-size: var(--t-small); line-height: 1.9; }
+
+.sitemap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+.sitemap__col h3 { font-family: var(--mono); font-size: var(--t-meta); letter-spacing: .06em;
+  text-transform: uppercase; margin-bottom: 10px; }
+.sitemap__col ul { margin: 0; padding-left: 18px; font-size: var(--t-small); line-height: 1.95; }
+.sitemap__stub { font-family: var(--mono); font-size: 10px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--ink-soft); }
+
+.gallery__main .tile__pending { color: var(--ink-soft); }
+
+@media (max-width: 1024px) { .contact-grid, .sitemap { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px)  { .contact-grid, .sitemap { grid-template-columns: 1fr; } }
