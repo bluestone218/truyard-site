@@ -515,7 +515,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 
 .range { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
-.tile { position: relative; display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); overflow: hidden; min-height: 380px; }
+/* height, not min-height — fixed on purpose (chat 19 Aug 2026). A portrait
+   photo (CM65, 888x1514) has no ceiling under max-height:100% when the
+   ancestor chain is auto-height, so it was inflating the whole tile past a
+   landscape photo's (Eagle XL46, 949x871) natural size. Fixing the box lets
+   .tile__pic's existing min-height:0 do what it was already there for —
+   shrink the photo area to fit instead of growing the tile — so every source
+   photo, whatever its shape, lands in the same box. Do not revert to
+   min-height without also capping the image some other way. */
+.tile { position: relative; display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); overflow: hidden; height: 380px; }
 .tile:hover { border-color: var(--ink); text-decoration: none; }
 .tile__pic { position: relative; flex: 1; min-height: 0; --mat: 12px; --bed: 20px; }
 .tile__pic .shot__bed { height: 100%; }
@@ -614,7 +622,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
      350px). The thumbs now share the row at every width, so a breakpoint
      override would only reintroduce the gap it was trying to close. */
   .spectable th { width: 50%; }
-  .tile { min-height: 300px; }
+  .tile { height: 300px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
