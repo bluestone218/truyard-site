@@ -107,7 +107,11 @@ document.querySelectorAll('.gallery__strip [role="tab"]').forEach(function (b) {
     if (!b.dataset.shot) return;
     document.querySelectorAll('.gallery__strip [role="tab"]').forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
     b.setAttribute('aria-selected', 'true');
-    document.getElementById('heroShot').src = b.dataset.shot;
+    // The main photo picks from a size list (srcset), so swap the list, not just src.
+    var hero = document.getElementById('heroShot');
+    var pic = b.querySelector('img');
+    if (pic && pic.srcset) hero.srcset = pic.srcset; else hero.removeAttribute('srcset');
+    hero.src = b.dataset.shot;
     var main = document.querySelector('.gallery__main');
     var field = b.dataset.kind === 'field';
     main.classList.toggle('shot--bleed', field);
