@@ -119,9 +119,3 @@ document.querySelectorAll('.gallery__strip [role="tab"]').forEach(function (b) {
   });
 });
 
-// Hero scrim comparison (homepage only)
-var sb = document.getElementById('scrimBtn');
-if (sb) sb.addEventListener('click', function () {
-  var off = document.body.classList.toggle('scrim-off');
-  sb.textContent = off ? 'Scrim: OFF — see the legibility problem' : 'Scrim: on — click to compare';
-});

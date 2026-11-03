@@ -21,53 +21,66 @@
 <style>
 /* Stand-in hero scene, drawn in CSS. Replace with .hero__media + a photograph. */
 .hero--photo { position: relative; isolation: isolate; min-height: 560px; display: flex; align-items: center; }
-.scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: linear-gradient(#F2C88A 0%, #E9B473 26%, #D99B5E 44%, #6E7A3C 45%, #55692F 58%, #3E5326 100%); }
-.scene__sun { position: absolute; right: 20%; top: 22%; width: 190px; height: 190px; border-radius: 50%; background: radial-gradient(circle, rgba(255,232,170,.95) 0%, rgba(255,205,110,.45) 42%, rgba(255,190,90,0) 72%); }
+.scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: linear-gradient(#F2C88A 0%, #E9B473 26%, #D99B5E 44%, #6E7A3C 45%, #55692F 58%, #3E5326 100%);
+  /* the sun's centre: low on the treeline, just left of the machine (which
+     is right: 4%, width min(44%, 500px)), so the machine reads as back-lit */
+  --sun-r: calc(4% + min(44%, 500px) - 10px); --sun-t: 39%; --sun-d: 230px; }
+.scene__sun { position: absolute; right: var(--sun-r); top: var(--sun-t); width: var(--sun-d); height: var(--sun-d); transform: translate(50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(255,238,196,.92) 0%, rgba(255,222,150,.62) 16%, rgba(255,204,120,.26) 40%, rgba(255,190,90,0) 70%); }
 .scene__trees { position: absolute; left: 0; right: 0; top: 33%; height: 14%; opacity: .62; }
 .scene__trees svg { width: 100%; height: 100%; display: block; }
 .scene__stripes { position: absolute; left: -30%; right: -30%; top: 45%; bottom: 0; background: repeating-linear-gradient(96deg, rgba(255,255,255,.075) 0px, rgba(255,255,255,.075) 46px, rgba(0,0,0,.055) 46px, rgba(0,0,0,.055) 92px); transform: perspective(520px) rotateX(58deg); transform-origin: top center; }
 .scene__cut { position: absolute; left: 46%; right: 0; top: 52%; bottom: 0; background: linear-gradient(180deg, rgba(120,140,60,.30), rgba(90,115,45,.05)); clip-path: polygon(6% 0, 100% 0, 100% 100%, 0 100%); }
-/* The machine sits straight on the scene — the white background has been
-   knocked out at build time, so there is no card and no box. Height-capped
-   and vertically centred so a tall portrait shot can't overflow the hero.
-   The drop-shadow is what plants it on the ground rather than floating. */
+/* The machine sits straight on the scene. Its colour grade, edge light and
+   ground shadow are baked into hero-machine.webp, the banner's own image (not a
+   product photo). Height-capped and vertically centred so a tall image can't
+   overflow the hero. */
 .scene__machine {
   position: absolute; right: 4%; top: 50%; transform: translateY(-50%);
   z-index: 1;
   width: min(44%, 500px);
   height: 88%;   /* a set height, so the img's max-height: 100% has something to resolve against */
   display: flex; align-items: flex-end; justify-content: center;
-  filter: drop-shadow(0 18px 22px rgba(20,30,10,.55));
 }
 .scene__machine img {
   max-width: 100%; max-height: 100%;
   width: auto; height: auto;
   object-fit: contain;
 }
-.hero--photo::before { content: ""; position: absolute; inset: 0; z-index: 2; background: linear-gradient(90deg, rgba(18,12,6,.90) 0%, rgba(18,12,6,.78) 30%, rgba(18,12,6,.35) 55%, rgba(18,12,6,.05) 78%, rgba(18,12,6,0) 100%), linear-gradient(180deg, rgba(18,12,6,.42) 0%, rgba(18,12,6,0) 38%); }
+/* Dark overlay for the headline: darkest behind the text block, letting the
+   sunset show elsewhere. The text block's centre is 27% across the 1240px
+   content column. */
+.hero--photo::before { content: ""; position: absolute; inset: 0; z-index: 2;
+  --tx: calc(max(0px, (100% - 1240px) / 2) + min(100%, 1240px) * .27);
+  background:
+    radial-gradient(ellipse min(660px, 50vw) 330px at var(--tx) 50%, rgba(18,12,6,.74) 0%, rgba(18,12,6,.60) 42%, rgba(18,12,6,.22) 74%, rgba(18,12,6,0) 100%),
+    linear-gradient(90deg, rgba(18,12,6,.72) 0%, rgba(18,12,6,.40) 30%, rgba(18,12,6,0) 58%),
+    linear-gradient(180deg, rgba(18,12,6,.40) 0%, rgba(18,12,6,0) 34%); }
 .hero--photo .hero__inner { position: relative; z-index: 3; width: 100%; }
 .hero--photo h1, .hero--photo .hero__sub { text-shadow: 0 2px 18px rgba(0,0,0,.55); }
 .hero--photo .hero__sub { opacity: 1; }
-.scrim-off .hero--photo::before { opacity: 0; }
-.toggle { position: absolute; right: 18px; bottom: 18px; z-index: 6; background: rgba(0,0,0,.62); color: #fff; border: 1px solid rgba(255,255,255,.35); font-family: var(--mono); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; padding: 9px 14px; cursor: pointer; }
-.toggle:hover { background: rgba(0,0,0,.85); }
+@media (min-width: 861px) {
+  /* truyard.css lifts these limits below 1025px (for the old placeholder);
+     beside the machine they must hold, or the text runs across it */
+  .hero.hero--photo h1 { max-width: 15ch; }
+  .hero.hero--photo .hero__sub { max-width: 46ch; }
+}
 @media (max-width: 1100px) {
   /* headline needs more room before the card starts crowding it */
   .scene__machine { width: min(34%, 340px); }
+  .scene { --sun-r: calc(4% + min(34%, 340px) - 10px); }
 }
 @media (max-width: 860px) {
   .hero--photo { display: block; min-height: 0; }
-  .hero--photo .scene { position: relative; height: 340px; }
+  .hero--photo .scene { position: relative; height: 340px; --sun-r: 76%; --sun-t: 26%; --sun-d: 170px; }
   .hero--photo::before { display: none; }
   .hero--photo .hero__inner { background: var(--nav); }
   .scene__machine {
     width: auto; max-width: 66%; height: 86%;
     right: 50%; transform: translate(50%, -50%);
   }
-  .toggle { display: none; }
 }
 @media (max-width: 480px) {
-  .hero--photo .scene { height: 260px; }
+  .hero--photo .scene { height: 260px; --sun-d: 130px; }
   .scene__machine { max-width: 78%; }
 }
 </style>
@@ -135,7 +148,7 @@
       </div>
       <div class="scene__stripes"></div>
       <div class="scene__cut"></div>
-      <div class="scene__machine"><img src="assets/photos/hero-machine.png" alt=""></div>
+      <div class="scene__machine"><img src="assets/photos/hero-machine.webp" alt="" fetchpriority="high"></div>
     </div>
 
     <div class="hero__inner">
@@ -147,7 +160,6 @@
       </div>
     </div>
 
-    <button class="toggle" id="scrimBtn" type="button">Scrim: on — click to compare</button>
   </section>
 
   <section class="section" id="range">
