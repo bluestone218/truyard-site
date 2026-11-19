@@ -435,6 +435,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 .card { display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--border); }
 .card:hover { border-color: var(--ink); text-decoration: none; }
 .card[aria-current="true"] { border-color: var(--ink); border-width: 2px; }
+/* Unbuilt product (Michael, 17 Nov 2026): no page, card doesn't click through, "Coming soon" in capitals, extra bold, at the card-name size */
+.card--soon:hover { border-color: var(--border); }
+.card__price.card__soon { font-size: var(--t-h3); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; }
 /* ---- card photo frame ----
    CAP THE HEIGHT. NEVER SET A WIDTH.  (same rule as the product hero, and for
    the same reason — max-height can only ever shrink an image, so it cannot
