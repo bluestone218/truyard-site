@@ -1,0 +1,42 @@
+/* truyard-th.css: Thai pages only (24 Nov 2026). Loaded after truyard.css.
+   Noto Sans Thai Looped for Thai text (Michael, 19 Nov 2026). Each stack
+   names the English font first; it has no Thai letters, so English words and
+   figures inside Thai text stay in the English fonts and the Thai falls to
+   Noto. Sizes: site-build.md (Type), set by eye on the CM65 pages 25 Nov 2026. */
+:root {
+  --sans:    'Inter', 'Noto Sans Thai Looped', system-ui, -apple-system, sans-serif;
+  --display: 'Archivo Black', 'Noto Sans Thai Looped', 'Arial Black', sans-serif;
+  /* No typewriter font on Thai pages (Michael, 25 Nov 2026): its wide spaces
+     and brackets break up Thai, so every --mono line uses the sans stack. */
+  --mono:    'Inter', 'Noto Sans Thai Looped', system-ui, -apple-system, sans-serif;
+  --t-body: 16px;
+}
+body { font-size: 16px; line-height: 1.7; }
+.product__lede, .page-lede, .page-body, .features li { font-size: 16px; line-height: 1.7; }
+.product__tagline, .page-tagline { font-size: 19px; line-height: 1.6; }
+/* Headings: line height 1.3 so stacked tone marks clear the line above. Thai
+   headings are bold Noto; font-synthesis stops a fake bold on Archivo Black. */
+h1, h2, h3 { line-height: 1.3; font-synthesis: none; }
+.product h1, .page-h1 { font-size: 28px; font-weight: 700; line-height: 1.3; }
+.compare h2, .section h2, .vbar__title { font-size: 22px; font-weight: 700; line-height: 1.3; }
+.cta h2 { line-height: 1.4; }
+.tabs__list button { font-size: 18px; font-weight: 700; }
+.card__name { font-size: 18px; font-weight: 700; line-height: 1.3; }
+.nav a, .nav__toggle { font-size: 16px; }
+.btn { font-size: 16px; font-weight: 700; }
+.crumb { font-size: 14px; }
+.contact-strip, .reach, .buy__vat, .buy__note, .card__kind, .card__spec,
+.card__here, .rule span, .spec-note, .glance dt { font-size: 14px; }
+.glance dd { font-size: 16px; }
+.spectable, .spectable th { font-size: 16px; }
+.spectable th { text-transform: none; }
+.footer a, .footer__contact { font-size: 14px; }
+.footer h3 { font-size: 18px; font-weight: 700; }
+/* Set by eye on the CM65 pages, 25 Nov 2026 (Michael and Claude): Thai is
+   never letter-spaced; the product name is balanced across its lines so no
+   word sits alone, and drops to 24px on phones (two lines, not three). */
+* { letter-spacing: 0 !important; }
+.product h1, .page-h1 { text-wrap: balance; }
+@media (max-width: 620px) {
+  .product h1, .page-h1 { font-size: 24px; }
+}
